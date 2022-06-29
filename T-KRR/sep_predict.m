@@ -13,8 +13,9 @@ timeWallGP = zeros(NTrials, 1);
 timeWallCP = zeros(NTrials, 1);
 timeWallRFF = zeros(NTrials, 1);
 
-data_str = 'sep7_data.dat';
+data_str = 'sep1_data.dat';
 increase_runtime = true;
+D = 2;
 
 warning('off', 'all');
 for ite = 1:NTrials
@@ -46,12 +47,13 @@ for ite = 1:NTrials
     
     % RFF
     tic;
-    if increase_runtime:
+    if increase_runtime
         [ZZ, ZY, W, B] = RFF(X, Y, M ^ D, lengthscale);
         wRFF = (ZZ + lambda * eye(M ^ D))\(ZY);
-    else:
+    else
         [ZZ, ZY, W, B] = RFF(X, Y, R * M, lengthscale);
         wRFF = (ZZ + lambda * eye(R * M))\(ZY);
+    end
     timeWallRFF(ite) = toc;
     trainErrorRFF(ite) = mean((Y - RFFPredict(X, W, B) * wRFF).^2);
 
